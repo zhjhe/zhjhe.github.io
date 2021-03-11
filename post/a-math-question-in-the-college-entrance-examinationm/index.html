@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+<meta name="author" content="何榛杰">
+
+
+
+<meta name="description" content="今天翻看《什么是数学》，第111页提到棣莫佛公式“是初等数学中最引人注目并且最有用的关系式”，突然想到其实可以用它来证明2010年江苏高考数">
+
+
+
+<link rel="icon" href="/favicon.ico">
+
+
+
+<meta name="keywords" content=" hugo  latex  theme ">
+
+
+
+
+<script>
+  
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\[\[', '\]\]']],
+      processEscapes: true,
+      processEnvironments: true,
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    }
+  };
+</script>
+
+<script async defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
+
+
+
+
+<link rel="canonical" href="https://hugo-theme-texify.qufy.me/post/a-math-question-in-the-college-entrance-examinationm/">
+
+
+
+
+<title>一道高考数学题 - 何榛杰的 blog</title>
+
+
+
+<link media="screen" rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/common.css'>
+<link media="screen" rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/content.css'>
+<link media="screen" rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/highlight.css'>
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="一道高考数学题" />
+<meta name="twitter:description" content="今天翻看《什么是数学》，第111页提到棣莫佛公式“是初等数学中最引人注目并且最有用的关系式”，突然想到其实可以用它来证明2010年江苏高考数" />
+
+
+  <link rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/single.css'>
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://hugo-theme-texify.qufy.me">何榛杰的 blog</a>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">Post</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/post/">Archives</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/about/">About</a>
+    </span>
+    
+  </nav>
+</header>
+
+    <main id="main" class="post">
+      
+      
+      
+      <h1>一道高考数学题</h1>
+      
+      <div class="content">
+        
+        <p>今天翻看<a href="https://book.douban.com/subject/1320282/">《什么是数学》</a>，第111页提到棣莫佛公式“<strong class=chinese>是初等数学中最引人注目并且最有用的关系式</strong>”，突然想到其实可以用它来证明2010年江苏高考数学卷最后一题。</p>
+<p>这道高考题是令人闻风丧胆的葛军出的，题目如下：</p>
+<hr>
+<p>已知 $\triangle ABC$ 的三边长都是有理数。</p>
+<p>1.求证：$\cos A$是有理数。
+2.求证：对于任意正整数$n，\cos nA$是有理数。</p>
+<hr>
+<p>第1问可用余弦定理来证明，难度不大。</p>
+<p>第2问推测出题意图不难想到可以用数学归纳法来证明。利用和角公式以及积化和差公式，将$\cos A$写成$\cos (n-1)A$的有理运算结果，注意这里有一个小障碍，会出现 $\cos (n-2)A$的项，但$\cos 2A$也是有理数是很容易证明的。</p>
+<p>以上是高考生比较标准的解法。下面利用棣莫佛公式来直接证明第2问。</p>
+<p>由公式：
+$$
+(\cos A + i\sin A)^n=\cos nA + i\sin nA
+$$</p>
+<p>考察$n=3$的情况，利用二项式公式展开左边，可以得到关系式:
+$$
+\cos 3A + i\sin 3A = \cos^3 A - 3\cos \sin^2 A + i(3\cos^2 A \sin^3 A)
+$$</p>
+<p>两个复数之间这样的等式相当于实数之间的一对等式，因此有：
+$$
+\cos 3A=\cos^3 A - 3\cos \sin^2 A
+$$</p>
+<p>又根据:
+$$
+\sin^2 A + \cos^2 A = 1
+$$
+可以消去$\sin^2A$，得到：
+$$
+\cos 3A=4\cos^3 A - 3\cos A
+$$</p>
+<p>右边是$\cos A$做一些有理运算，当$\cos A$是有理数时，结果还是有理数。因此$\cos 3A$也是有理数。</p>
+<p>对于任意$n$，把二项式展开后，所有带有 $\sin A$的项，如果系数是偶数，则会成为实部的子项，如果是奇数，则会成为虚部的子项。因为$\sin^{2m} A=(1-\cos^2 A)^m$,因此，实部 $\cos nA$总能写成$\cos^2 A$有理运算的式子，即$\cos nA$为有理数。</p>
+
+        
+      </div>
+      <div class="paginator">
+        
+        <a class="link" href="https://hugo-theme-texify.qufy.me/post/eight-queens-use-go-slove/">← prev</a>
+        
+        
+        <a></a>
+        
+      </div>
+      <div class="comment">
+        
+      </div>
+      
+    </main>
+    <footer id="footer">
+  <div>
+    <span>© 2019</span> - <span>2021</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span></span>
+  </div>
+</footer>
+
+  </div>
+  
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+<meta name="author" content="何榛杰">
+
+
+
+<meta name="description" content="问题：在一个8*8大小的国际象棋棋盘上放置8个皇后棋子，使得所有的皇后都是安全的（即任意两个皇后都无法攻击到对方）。 分析： 按照国际象棋的规则">
+
+
+
+<link rel="icon" href="/favicon.ico">
+
+
+
+<meta name="keywords" content=" hugo  latex  theme ">
+
+
+
+
+<script>
+  
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\[\[', '\]\]']],
+      processEscapes: true,
+      processEnvironments: true,
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    }
+  };
+</script>
+
+<script async defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
+
+
+
+
+<link rel="canonical" href="https://hugo-theme-texify.qufy.me/post/eight-queens-use-go-slove/">
+
+
+
+
+<title>八皇后问题（使用 go 求解） - 何榛杰的 blog</title>
+
+
+
+<link media="screen" rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/common.css'>
+<link media="screen" rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/content.css'>
+<link media="screen" rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/highlight.css'>
+
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="八皇后问题（使用 go 求解）" />
+<meta name="twitter:description" content="问题：在一个8*8大小的国际象棋棋盘上放置8个皇后棋子，使得所有的皇后都是安全的（即任意两个皇后都无法攻击到对方）。 分析： 按照国际象棋的规则" />
+
+
+  <link rel="stylesheet" href='https://hugo-theme-texify.qufy.me/css/single.css'>
+</head>
+
+<body>
+  <div id="wrapper">
+    <header id="header">
+  <h1>
+    <a href="https://hugo-theme-texify.qufy.me">何榛杰的 blog</a>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/">Post</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/post/">Archives</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      <a class="link" href="/about/">About</a>
+    </span>
+    
+  </nav>
+</header>
+
+    <main id="main" class="post">
+      
+      
+      
+      <h1>八皇后问题（使用 go 求解）</h1>
+      
+      <div class="content">
+        
+        <pre><code>问题：在一个8*8大小的国际象棋棋盘上放置8个皇后棋子，使得所有的皇后都是安全的（即任意两个皇后都无法攻击到对方）。
+</code></pre>
+<p>分析：
+按照国际象棋的规则，皇后的攻击方式是横，竖和斜向。</p>
+<p>皇后可以攻击到同一列所有其它棋子，因此可推导出每1列只能存在1个皇后，即每个皇后分别占据一列。棋盘一共8列，刚好放置8个皇后。</p>
+<p>为了摆放出满足条件的8个皇后的布局，可以按如下方式逐步操作：</p>
+<pre><code>1. 在第0列找到一个位置放置第1个皇后；
+2. 在第1列找到一个位置放置第2个皇后；
+3. 在第2列找到一个位置放置第3个皇后；
+4. 对第3，4，5，6，7，8列都执行放置操作；
+5. 当执行完“在第7列找到一个放置第8个皇后”这一操作完毕后，问题求解完毕。
+</code></pre>
+<p>观察1，2，3，4 这些操作步骤，可以发现是一个重复的动作，抽象一下，即“在第 n 列放下第 n+1 个皇后”，n 从0到7。看起来我们需要写一个这样的过程：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">col</span> <span class="kt">int</span><span class="p">)</span>
+</code></pre></div><p>显然，需要使得 col 从0到7每次+1，一共执行8次 put。
+可以考虑用循环或着递归来完成它，由于一般来说，使用递归解决问题的思路会更加自然和简单，因此我们选择使用递归。那么 put 看起来可能是这样的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 执行某些操作
+</span><span class="c1"></span>    <span class="nf">put</span><span class="p">(</span><span class="nx">cor</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>我们猜测递归的启动方式可能是从 col = 0 开始，那么调用 put(0)
+作为程序入口的 main 函数看起来是这样的：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nf">put</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>接下来我们需要考虑递归如何结束。分析步骤5可知，当 col==8 时递归结束。因此我们继续写 put 的代码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">col</span> <span class="o">==</span> <span class="mi">8</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="c1">// 执行某些操作
+</span><span class="c1"></span>    <span class="nf">put</span><span class="p">(</span><span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>递归程序的框架看起来已经搭好了，接下来我们要求解的子问题是：</p>
+<p>在第 col 列，找到一个位置，放下第 col+1 个皇后。
+这个子问题的约束条件是：</p>
+<p>放下皇后之后，棋盘上没有任意两个皇后可以攻击到对方，即我们找到的这个位置是安全的。
+由于每次放下皇后时，只有8个位置可选，因此在某行放下皇后的操作步骤如下：</p>
+<pre><code>1. 在第0行放下皇后；
+2. 检测当前位置是否安全；
+3. 如果安全，则子问题求解结束；
+4. 如果不安全，则在下一个位置放皇后；
+5. 回到步骤3，继续。
+</code></pre>
+<p>看起来这是一个循环问题，写下代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">pos</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+    <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nf">safe</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// 子问题求解结束
+</span><span class="c1"></span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>第3步找到安全位置后，我们就去后一列找放置下一个皇后的位置了，即接下来调用 put(col+1)，代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">pos</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+    <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nf">safe</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">put</span><span class="p">(</span><span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>现在看一下目前的代码。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">col</span> <span class="o">==</span> <span class="mi">8</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">pos</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+        <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nf">safe</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nf">put</span><span class="p">(</span><span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>查看代码之后我们发现，代码里没有任何东西来表示棋盘，以及皇后的位置。看起来我们需要做点什么。</p>
+<p>我们需要选用某个数据结构来表示棋盘和皇后的位置。</p>
+<p>棋盘是由64个格子组成的，排列布局为8*8。第一反应是可以用一个二维数组来表示，下标是格子的坐标，数组元素选用 bool 型， true 表示此处放置了皇后， false 表示空格子。</p>
+<p>初始时，数组中的64个元素都为 false， 程序运行之后，其中8个元素的值变为 true。</p>
+<p>但看起来似乎有点浪费，而且处理多维数组的下标比较麻烦。我们可以再想想，是否可以简化一下棋盘的表示。</p>
+<p>让我们再用自然语言描述一下最终求出的解，也许是这样的：</p>
+<pre><code>第0列的第a行有皇后
+第1列的第b行有皇后
+第2列的第c行有皇后
+...
+第7列的第h行有皇后
+</code></pre>
+<p>一维数组 [a, b, c, d, e, f, g, h] 就能表示上面这个解的全部信息。不妨先用简单的试试看。</p>
+<p>我们用一个类型为 [8]int 的变量 boards 来表示棋盘。现在代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">col</span> <span class="o">==</span> <span class="mi">8</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">boards</span><span class="p">)</span> <span class="c1">// 输出答案
+</span><span class="c1"></span>        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">pos</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span> <span class="p">=</span> <span class="nx">pos</span> <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nf">safe</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nf">put</span><span class="p">(</span><span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>出于遵循“变量的作用域尽可能小”原则，我们把 boards 作为 put 的参数。现在代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">col</span> <span class="o">==</span> <span class="mi">8</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">boards</span><span class="p">)</span> <span class="c1">// 输出答案
+</span><span class="c1"></span>        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">pos</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span> <span class="p">=</span> <span class="nx">pos</span> <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nf">safe</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>初始时，我们需要一个空的棋盘。在 main 函数再加点东西。</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">boards</span> <span class="o">:=</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{}</span>
+    <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p>有了可以表示棋盘的数据对象 boards 之后，我们来完成 safe 这个函数。</p>
+<p>boards 作为 safe 的参数，接下来我们要检验棋盘上 pos 这个位置是否安全。</p>
+<p>咋一看，我们可能想到遍历整个棋盘，看看是否有任意两个皇后可以攻击。但我们再阅读一下已经写好的代码并仔细回顾最初的解题操作步骤，代码显示我们的操作逻辑是：</p>
+<pre><code>1. 在第n行的 pos (pos从0到7) 放下皇后
+2. 检测 pos 是否安全
+3. ...
+</code></pre>
+<p>我们再看看“外”一层的操作步骤：</p>
+<pre><code>1. 在第0列找到一个位置放置第1个皇后；
+2. 在第1列找到一个位置放置第2个皇后；
+3. ...
+4. 在第6列找到一个位置方式第7个皇后；
+5. ...
+</code></pre>
+<p>我们发现，按照这个操作步骤，当我们在第 n 列寻找安全格子 pos 时，我们只需要检查这个 pos 是否会被前面列的那些皇后们攻击到，而这些皇后们本身彼此都是不会互相攻击。</p>
+<p>那么检查的操作步骤如下：</p>
+<pre><code>1. 获取第0列皇后的位置；
+2. 检查是否会攻击到第n列的 pos；
+3. 如果能攻击到，则不安全；
+4. 如果安全，则循环计数加1，回到步骤1继续；
+5. ...
+6. 循环的的最后一次时检查第 n-1 列皇后是否会攻击到第n列的 pos，如果依然攻击不到，那么我们能确认 pos 是安全的。
+</code></pre>
+<p>因此，safe 函数的实现如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">safe</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">pos</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="nx">c</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="p">&lt;</span> <span class="nx">col</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nf">isAttack</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">col</span><span class="p">,</span> <span class="nx">pos</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div><p>需要传递 boards ， col 和 pos 三个参数。返回 bool 值，false 表示不安全， true 表示安全。</p>
+<p>代码反映了一个事实：只要有一个皇后能攻击到 pos ，则 pos 就是不安全的，只有检测了前面 n-1 个皇后，它们全都不能攻击 pos ，我们才可以说 pos 是安全的。</p>
+<p>现在 put 的代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">col</span> <span class="o">==</span> <span class="mi">8</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">boards</span><span class="p">)</span> <span class="c1">// 输出答案
+</span><span class="c1"></span>        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">pos</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span> <span class="p">=</span> <span class="nx">pos</span> <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nf">safe</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">col</span><span class="p">,</span> <span class="nx">pos</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">接下来我们着手实现</span> <span class="nx">isAttack</span><span class="err">。</span>
+
+<span class="kd">func</span> <span class="nf">isAttack</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">c</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">==</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="k">case</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span><span class="o">-</span><span class="nx">boards</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">==</span> <span class="nx">c</span><span class="o">-</span><span class="nx">col</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="k">case</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span><span class="o">-</span><span class="nx">boards</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">==</span> <span class="nx">col</span><span class="o">-</span><span class="nx">c</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div><p>这个 function 需要4个参数让我们嗅到了一点不好的味道，其中有3个参数都是从 safe 延续而来的，我们来看看调用 safe 的代码片段：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">        <span class="o">...</span>
+        <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span> <span class="p">=</span> <span class="nx">pos</span> <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nf">safe</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">col</span><span class="p">,</span> <span class="nx">pos</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">...</span>
+        <span class="p">}</span>
+</code></pre></div><p>boards, col, pos 是存在关联的，在执行完 boards[col] = pos 之后，boards[col] 的值就等于 pos 了，因此我们可以去掉 pos 这个参数，用 boards[col] 替换它。</p>
+<p>最后再检查一遍，代码里多处出现8这个 magic number，这显然不好。</p>
+<p>8是棋盘的尺寸，我们动手修改 boards 的类型和初始化方式。</p>
+<p>新的初始化代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go">    <span class="nx">size</span> <span class="o">:=</span> <span class="mi">8</span>
+    <span class="nx">boards</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span>
+</code></pre></div><p>现在，magic number 可以用 len(boards) 来替代了。</p>
+<p>我们意外地发现，这次重构后，程序可以求解任意尺寸棋盘的皇后问题了。</p>
+<p>最终完整代码如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">queen</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">queen</span><span class="p">(</span><span class="nx">size</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">boards</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span>
+    <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">size</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">boards</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">col</span> <span class="o">==</span> <span class="nx">size</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">boards</span><span class="p">)</span> <span class="c1">// 输出答案
+</span><span class="c1"></span>        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">pos</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">pos</span> <span class="p">&lt;</span> <span class="nx">size</span><span class="p">;</span> <span class="nx">pos</span><span class="o">++</span> <span class="p">{</span>
+        <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span> <span class="p">=</span> <span class="nx">pos</span> <span class="c1">// 在 pos 处放下皇后
+</span><span class="c1"></span>        <span class="k">if</span> <span class="nf">safe</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">col</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">put</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">col</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">safe</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="nx">c</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">c</span> <span class="p">&lt;</span> <span class="nx">col</span><span class="p">;</span> <span class="nx">c</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nf">isAttack</span><span class="p">(</span><span class="nx">boards</span><span class="p">,</span> <span class="nx">c</span><span class="p">,</span> <span class="nx">col</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">isAttack</span><span class="p">(</span><span class="nx">boards</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="nx">c</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">col</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">==</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="k">case</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span><span class="o">-</span><span class="nx">boards</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">==</span> <span class="nx">c</span><span class="o">-</span><span class="nx">col</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="k">case</span> <span class="nx">boards</span><span class="p">[</span><span class="nx">col</span><span class="p">]</span><span class="o">-</span><span class="nx">boards</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span> <span class="o">==</span> <span class="nx">col</span><span class="o">-</span><span class="nx">c</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+        
+      </div>
+      <div class="paginator">
+        
+        <a class="link" href="https://hugo-theme-texify.qufy.me/post/how-many-days-in-a-month/">← prev</a>
+        
+        
+        <a class="link" href="https://hugo-theme-texify.qufy.me/post/a-math-question-in-the-college-entrance-examinationm/">next →</a>
+        
+      </div>
+      <div class="comment">
+        
+      </div>
+      
+    </main>
+    <footer id="footer">
+  <div>
+    <span>© 2019</span> - <span>2021</span>
+  </div>
+
+  <div>
+    <span>Powered by </span>
+    <a class="link" href="https://gohugo.io/">Hugo</a>
+    <span> 🍦 Theme </span>
+    <a class="link" href="https://github.com/queensferryme/hugo-theme-texify">TeXify</a>
+  </div>
+
+  <div class="footnote">
+    <span></span>
+  </div>
+</footer>
+
+  </div>
+  
+
+
+
+
+
+</body>
+
+</html>

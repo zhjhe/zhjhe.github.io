@@ -2,17 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/posts/my-first-post/</loc>
+    <loc>https://hugo-theme-texify.qufy.me/about/</loc>
+    <lastmod>2021-03-11T15:30:54+08:00</lastmod>
+  </url><url>
+    <loc>https://hugo-theme-texify.qufy.me/post/</loc>
+    <lastmod>2021-03-11T15:05:24+08:00</lastmod>
+  </url><url>
+    <loc>https://hugo-theme-texify.qufy.me/post/a-math-question-in-the-college-entrance-examinationm/</loc>
+    <lastmod>2021-03-11T15:05:24+08:00</lastmod>
+  </url><url>
+    <loc>https://hugo-theme-texify.qufy.me/</loc>
+    <lastmod>2021-03-11T15:05:24+08:00</lastmod>
+  </url><url>
+    <loc>https://hugo-theme-texify.qufy.me/post/eight-queens-use-go-slove/</loc>
+    <lastmod>2021-03-11T14:48:39+08:00</lastmod>
+  </url><url>
+    <loc>https://hugo-theme-texify.qufy.me/post/how-many-days-in-a-month/</loc>
+    <lastmod>2021-03-11T14:41:24+08:00</lastmod>
+  </url><url>
+    <loc>https://hugo-theme-texify.qufy.me/post/my-first-post/</loc>
     <lastmod>2021-03-11T10:23:36+08:00</lastmod>
   </url><url>
-    <loc>/posts/</loc>
-    <lastmod>2021-03-11T10:23:36+08:00</lastmod>
+    <loc>https://hugo-theme-texify.qufy.me/categories/</loc>
   </url><url>
-    <loc>/</loc>
-    <lastmod>2021-03-11T10:23:36+08:00</lastmod>
-  </url><url>
-    <loc>/categories/</loc>
-  </url><url>
-    <loc>/tags/</loc>
+    <loc>https://hugo-theme-texify.qufy.me/tags/</loc>
   </url>
 </urlset>
