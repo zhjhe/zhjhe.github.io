@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on 何榛杰的 blog</title>
-    <link>https://hugo-theme-texify.qufy.me/post/</link>
+    <link>https://zhjhe.github.io/post/</link>
     <description>Recent content in Posts on 何榛杰的 blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 11 Mar 2021 15:05:24 +0800</lastBuildDate><atom:link href="https://hugo-theme-texify.qufy.me/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 11 Mar 2021 15:05:24 +0800</lastBuildDate><atom:link href="https://zhjhe.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>一道高考数学题</title>
-      <link>https://hugo-theme-texify.qufy.me/post/a-math-question-in-the-college-entrance-examinationm/</link>
+      <link>https://zhjhe.github.io/post/a-math-question-in-the-college-entrance-examinationm/</link>
       <pubDate>Thu, 11 Mar 2021 15:05:24 +0800</pubDate>
       
-      <guid>https://hugo-theme-texify.qufy.me/post/a-math-question-in-the-college-entrance-examinationm/</guid>
+      <guid>https://zhjhe.github.io/post/a-math-question-in-the-college-entrance-examinationm/</guid>
       
       <description>&lt;p&gt;今天翻看&lt;a href=&#34;https://book.douban.com/subject/1320282/&#34;&gt;《什么是数学》&lt;/a&gt;，第111页提到棣莫佛公式“&lt;strong&gt;是初等数学中最引人注目并且最有用的关系式&lt;/strong&gt;”，突然想到其实可以用它来证明2010年江苏高考数学卷最后一题。&lt;/p&gt;
 &lt;p&gt;这道高考题是令人闻风丧胆的葛军出的，题目如下：&lt;/p&gt;
@@ -52,10 +52,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>八皇后问题（使用 go 求解）</title>
-      <link>https://hugo-theme-texify.qufy.me/post/eight-queens-use-go-slove/</link>
+      <link>https://zhjhe.github.io/post/eight-queens-use-go-slove/</link>
       <pubDate>Thu, 11 Mar 2021 14:48:39 +0800</pubDate>
       
-      <guid>https://hugo-theme-texify.qufy.me/post/eight-queens-use-go-slove/</guid>
+      <guid>https://zhjhe.github.io/post/eight-queens-use-go-slove/</guid>
       
       <description>&lt;pre&gt;&lt;code&gt;问题：在一个8*8大小的国际象棋棋盘上放置8个皇后棋子，使得所有的皇后都是安全的（即任意两个皇后都无法攻击到对方）。
 &lt;/code&gt;&lt;/pre&gt;
@@ -304,10 +304,10 @@ $$&lt;/p&gt;
     
     <item>
       <title>一个月有多少天?</title>
-      <link>https://hugo-theme-texify.qufy.me/post/how-many-days-in-a-month/</link>
+      <link>https://zhjhe.github.io/post/how-many-days-in-a-month/</link>
       <pubDate>Thu, 11 Mar 2021 14:41:24 +0800</pubDate>
       
-      <guid>https://hugo-theme-texify.qufy.me/post/how-many-days-in-a-month/</guid>
+      <guid>https://zhjhe.github.io/post/how-many-days-in-a-month/</guid>
       
       <description>&lt;p&gt;由于日历和我们的生活息息相关，几乎任何一个有生活经验的成年人，都可以毫不犹豫地回答:一个月可能有30天，31天，或者有28天。&lt;/p&gt;
 &lt;p&gt;再特殊点，闰年的2月有29天。&lt;/p&gt;
@@ -348,18 +348,6 @@ Su Mo Tu We Th Fr Sa
 &lt;p&gt;在写这篇 blog 之前我对闰年的理解还是小学数学老师教的，可以被4整除的年份是闰年，这么多年一直也没怀疑过其准确性。不由得感叹，即便是最习以为常的，坚信一定正确的东西，不一定都是正确的呢。&lt;/p&gt;
 &lt;p&gt;参考资料：&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;http://blog.sina.com.cn/s/blog_8713f2c501013md6.html&#34;&gt;http://blog.sina.com.cn/s/blog_8713f2c501013md6.html&lt;/a&gt;&lt;/p&gt;
-</description>
-      
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>https://hugo-theme-texify.qufy.me/post/my-first-post/</link>
-      <pubDate>Thu, 11 Mar 2021 10:23:36 +0800</pubDate>
-      
-      <guid>https://hugo-theme-texify.qufy.me/post/my-first-post/</guid>
-      
-      <description>&lt;p&gt;This is a test post.&lt;/p&gt;
 </description>
       
     </item>
